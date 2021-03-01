@@ -1,59 +1,90 @@
 package com.stackroute.datamunger.query.parser;
 
 import java.util.List;
-/* 
+
+/*
  * This class will contain the elements of the parsed Query String such as conditions,
  * logical operators,aggregate functions, file name, fields group by fields, order by
  * fields, Query Type
  * */
 public class QueryParameter {
+    private String fileName;
+    private String baseQuery;
+    private List<Restriction> restrictions;
+    private List<String> logicalOperators;
+    private List<String> fields;
+    private List<AggregateFunction> aggregateFunctions;
+    private List<String> groupByFields;
+    private List<String> orderByFields;
 
-	public String getFileName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 
-	public List<String> getFields() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	public List<Restriction> getRestrictions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public String getBaseQuery() {
+        return baseQuery;
+    }
 
-	public String getBaseQuery() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setBaseQuery(String baseQuery) {
+        this.baseQuery = baseQuery;
+    }
 
-	public List<AggregateFunction> getAggregateFunctions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public List<Restriction> getRestrictions() {
+        return restrictions;
+    }
 
-	public List<String> getLogicalOperators() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setRestrictions(List<Restriction> restrictions) {
+        this.restrictions = restrictions;
+    }
 
-	public List<String> getGroupByFields() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public List<String> getLogicalOperators() {
+        return logicalOperators;
+    }
 
-	public List<String> getOrderByFields() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setLogicalOperators(List<String> logicalOperators) {
+        this.logicalOperators = logicalOperators;
+    }
 
-	public String getQUERY_TYPE() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public List<String> getFields() {
+        return fields;
+    }
 
-		
+    public void setFields(List<String> fields) {
+        this.fields = fields;
+    }
 
-	
+    public List<AggregateFunction> getAggregateFunctions() {
+        return aggregateFunctions;
+    }
+
+    public void setAggregateFunctions(List<AggregateFunction> aggregateFunctions) {
+        this.aggregateFunctions = aggregateFunctions;
+    }
+
+    public List<String> getGroupByFields() {
+        return groupByFields;
+    }
+
+    public void setGroupByFields(List<String> groupByFields) {
+        this.groupByFields = groupByFields;
+    }
+
+    public List<String> getOrderByFields() {
+        return orderByFields;
+    }
+
+    public void setOrderByFields(List<String> orderByFields) {
+        this.orderByFields = orderByFields;
+    }
+
+    public String getQUERY_TYPE() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
 }
