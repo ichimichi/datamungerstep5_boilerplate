@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class QueryParser {
     private QueryParameter queryParameter = new QueryParameter();
@@ -18,6 +19,7 @@ public class QueryParser {
          * "from" clause.
          */
         queryParameter.setFileName(getFileName(queryString));
+        queryParameter.setBaseQuery(getBaseQuery(queryString));
 
         /*
          * extract the order by fields from the query string. Please note that we will
@@ -128,7 +130,7 @@ public class QueryParser {
     }
 
     public List<String> getFields(final String queryString) {
-        return new ArrayList<>(Arrays.asList(queryString.toLowerCase(Locale.ROOT).split("select")[1].split("\\sfrom\\s")[0].trim().split(",")));
+        return new ArrayList<>(Arrays.asList(queryString.toLowerCase(Locale.ROOT).split("select")[1].trim().split("\\sfrom\\s")[0].trim().split(",")).stream().map(String::trim).collect(Collectors.toList()));
     }
 
     public String getConditionsPartQuery(final String queryString) {
@@ -143,11 +145,24 @@ public class QueryParser {
             return null;
         }
         List<Restriction> restrictions = new ArrayList<>();
-        for (String restriction : getConditionsPartQuery(queryString).split("\\sor\\s|\\sand\\s")) {
-            String name = restriction.split(">|<|=|!=|>=|<=")[0].trim();
-            String conditon = restriction.split("\\s|'")[1];
-            String value = restriction.split(">|<|=|!=|>=|<=")[1].replace('\'', ' ').trim();
-            restrictions.add(new Restriction(name, value, conditon));
+        for (String restriction : getConditionsPartQuery(queryString).split("\\sand\\s|\\sor\\s")) {
+            String condition = "";
+            if (restriction.contains(">=")) {
+                condition = ">=";
+            } else if (restriction.contains("<=")) {
+                condition = "<=";
+            } else if (restriction.contains("!=")) {
+                condition = "!=";
+            } else if (restriction.contains(">")) {
+                condition = ">";
+            } else if (restriction.contains("<")) {
+                condition = "<";
+            } else if (restriction.contains("=")) {
+                condition = "=";
+            }
+            String name = restriction.split(condition)[0].trim();
+            String value = restriction.split(condition)[1].trim().replaceAll("'", "");
+            restrictions.add(new Restriction(name, value, condition));
         }
         return restrictions;
     }
@@ -177,7 +192,7 @@ public class QueryParser {
                     continue;
                 }
                 String fieldName = field.split("\\(|\\)")[1];
-                String function = field.split("\\(")[0];
+                String function = field.split("\\(|\\)")[0];
                 aggregateFunctionList.add(new AggregateFunction(fieldName, function));
             }
             return aggregateFunctionList;
